@@ -1,9 +1,11 @@
 
 class Pezzo:
-	def __init__(self, strlist, costo, passi, bottoni):
-		self.costo = costo
-		self.passi = passi
-		self.bottoni = bottoni
+	def __init__(self, strlist, costo, passi, bottoni, first):
+		self.costo = int(costo)
+		self.passi = int(passi)
+		self.bottoni = int(bottoni)
+		
+		self.first = True if first else False
 		
 		base = []
 		
@@ -32,10 +34,10 @@ class Pezzo:
 			if not self.contains(el):
 				self.permutazioni.append(el)
 			
-		for el in self.permutazioni:
-			for l in el:
-				print l
-			print
+		#~ for el in self.permutazioni:
+			#~ for l in el:
+				#~ print l
+			#~ print
 		
 		
 	def contains(self, piece):
@@ -94,6 +96,9 @@ class Pezzo:
 			ret.append(list(reversed(el)))
 			
 		return ret	
+		
+	def __str__(self):
+		return str(self.permutazioni[0]) + str(self.first)
 			
 
 if __name__=="__main__":
@@ -106,7 +111,7 @@ if __name__=="__main__":
 	for line in fobj:
 		if line == "\n":
 			if p:
-				pezzi.append(Pezzo(m, p[0], p[1], p[2]))
+				pezzi.append(Pezzo(m, p[0], p[1], p[2], 1 if len(p)>2 else 0))
 				raw_input()
 
 		else:
