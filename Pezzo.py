@@ -39,6 +39,57 @@ class Pezzo:
 				#~ print l
 			#~ print
 		
+		self.l1 = self.count_hor(self.permutazioni[0])
+		self.l2 = self.count_ver(self.permutazioni[0])
+		
+		
+		#~ for el in strlist:
+			#~ print el
+		#~ print self.l1, self.l2
+		#~ raw_input()
+	
+	def count_hor(self, mat):
+		
+		r = []
+		
+		for line in mat:
+			maxlen = 0
+			l = 0
+			for x in line:
+				if x == 'x':
+					l +=1
+				else:
+					l=0
+					
+				if l > maxlen:
+					maxlen=l
+				
+			r.append(maxlen)
+		
+		return r
+		
+	def count_ver(self, mat):
+		
+		r =  []
+		
+		for i in range(len(mat[0])):
+			maxlen = 0
+			l = 0
+		
+			line = [el[i] for el in mat]
+			
+			for x in line:
+				if x == 'x':
+					l +=1
+				else:
+					l=0
+					
+				if l > maxlen:
+					maxlen=l
+				
+			r.append(maxlen)		
+		
+		return r
 		
 	def contains(self, piece):
 		
