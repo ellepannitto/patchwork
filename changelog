@@ -1,8 +1,14 @@
-Patchwork ver 0.1
+Patchwork ver 0.2.2
   
-  * first commit
+  * added class Quilt, that can compute the candidate positions in which a piece can be put.
 
--- Ludovica Pannitto <ellepannitto@gmail.com> Fri, 14 Apr 2017 10:30
+-- Lucio Messina <luciomessina94@gmail.com> Fri, 21 Apr 2017 21:01
+
+Patchwork ver 0.2.1
+  
+  * additional lenght of full squares in pieces added
+
+-- Ludovica Pannitto <ellepannitto@gmail.com> Fri, 21 Apr 2017 18:45
 
 Patchwork ver 0.2
   
@@ -10,8 +16,9 @@ Patchwork ver 0.2
 
 -- Ludovica Pannitto <ellepannitto@gmail.com> Fri, 14 Apr 2017 11:15
 
-Patchwork ver 0.2.1
+Patchwork ver 0.1
   
-  * additional lenght of full squares in pieces added
+  * first commit
 
--- Ludovica Pannitto <ellepannitto@gmail.com> Fri, 21 Apr 2017 18:45
+-- Ludovica Pannitto <ellepannitto@gmail.com> Fri, 14 Apr 2017 10:30
+
