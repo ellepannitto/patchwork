@@ -1,3 +1,9 @@
+Patchwork ver 0.2.3
+  
+  * try_insert for class Quilt added.
+
+-- Ludovica Pannitto <ellepannitto@gmail.com> Sat, 22 Apr 2017 14:00
+
 Patchwork ver 0.2.2
   
   * added class Quilt, that can compute the candidate positions in which a piece can be put.

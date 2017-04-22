@@ -1,3 +1,5 @@
+import Permutazione
+
 
 class Pezzo:
 	def __init__(self, strlist, costo, passi, bottoni, first):
@@ -7,6 +9,8 @@ class Pezzo:
 		
 		self.first = True if first else False
 		
+		self.permutazioni = []
+	
 		base = []
 		
 		for el in strlist:
@@ -15,32 +19,29 @@ class Pezzo:
 				l.append(c)
 			base.append(l)
 				
-		self.permutazioni=[]
 		
-		self.permutazioni.append(base)
+		self.permutazioni.append(Permutazione.Permutazione(base))
 		
 		r1 = self.ruota(base)
 				
 		for el in r1:
 			if not self.contains(el):
-				self.permutazioni.append(el)
+				self.permutazioni.append(Permutazione.Permutazione(el))
 		
 		
 		if not self.contains(self.rifletti(base)):
-			self.permutazioni.append(self.rifletti(base))
+			self.permutazioni.append(Permutazione.Permutazione(self.rifletti(base)))
 		
 		r2 = self.ruota(self.rifletti(base))
 		for el in r2:
 			if not self.contains(el):
-				self.permutazioni.append(el)
+				self.permutazioni.append(Permutazione.Permutazione(el))
 			
-		#~ for el in self.permutazioni:
-			#~ for l in el:
-				#~ print l
-			#~ print
+		for el in self.permutazioni:
+			print vars(el)
+			print
 		
-		self.l1 = self.count_hor(self.permutazioni[0])
-		self.l2 = self.count_ver(self.permutazioni[0])
+
 		
 		
 		#~ for el in strlist:
@@ -48,67 +49,12 @@ class Pezzo:
 		#~ print self.l1, self.l2
 		#~ raw_input()
 	
-	def count_hor(self, mat):
-		
-		r = []
-		
-		for line in mat:
-			maxlen = 0
-			l = 0
-			for x in line:
-				if x == 'x':
-					l +=1
-				else:
-					l=0
-					
-				if l > maxlen:
-					maxlen=l
-				
-			r.append(maxlen)
-		
-		return r
-		
-	def count_ver(self, mat):
-		
-		r =  []
-		
-		for i in range(len(mat[0])):
-			maxlen = 0
-			l = 0
-		
-			line = [el[i] for el in mat]
-			
-			for x in line:
-				if x == 'x':
-					l +=1
-				else:
-					l=0
-					
-				if l > maxlen:
-					maxlen=l
-				
-			r.append(maxlen)		
-		
-		return r
+
 		
 	def contains(self, piece):
 		
-		cond = False
-		for el in self.permutazioni:
-			if len(el) == len(piece) and len(el[0])==len(piece[0]):
-				
-				v = True
-				
-				for i in range(len(el)):
-					for j in range(len(el[i])):
-						if not el[i][j]==piece[i][j]:
-							v = False
-				
-				if v:
-					cond = True
-		
-		return cond
-			
+		return any(el.equals(piece) for el in self.permutazioni)
+					
 	def ruota(self, matrix):
 		
 		ret = []
@@ -162,8 +108,10 @@ if __name__=="__main__":
 	for line in fobj:
 		if line == "\n":
 			if p:
+				print "nuovo pezzo"
 				pezzi.append(Pezzo(m, p[0], p[1], p[2], 1 if len(p)>2 else 0))
-				raw_input()
+				#~ raw_input()
+				
 
 		else:
 			

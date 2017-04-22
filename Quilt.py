@@ -20,7 +20,7 @@ def valid_alignment ( needle, haystack, posstart ):
 			j += 1
 	
 	print still_valid, "\n\n"
-	raw_input ()
+	#~ raw_input ()
 
 	return still_valid
 	
@@ -78,8 +78,10 @@ def parse_quilt ( quilt_str_array ):
 	
 	mat = [[ c for c in line.strip() ] for line in quilt_str_array ]
 	
-	ret.hholes = count_hor ( mat )	
+	ret.hholes = count_hor ( mat )
 	ret.vholes = count_ver ( mat )
+	ret.matrix = mat
+	
 	return ret	
 		
 
@@ -89,6 +91,7 @@ class Quilt:
 		self.dim = dim
 		self.hholes = [ [ dim ] * dim ]
 		self.vholes = [ [ dim ] * dim ]
+		self.martrix = [ [ '.' ]* dim ] * dim 
 		
 	
 	def all_the_possible_alignments ( self, needle, haystack ):
@@ -102,7 +105,7 @@ class Quilt:
 		return result_set
 		
 	
-	def candidate_positions ( self, l1, l2, top=-1 ):
+	def candidate_positions ( self, l_hor, l_ver, top=-1 ):
 		'''
 			finds the top candidate positions for a piece, given the maximum amount of contiguous squares in each row (l1) and in each col (l2). 
 			returns a list of all the positions in which that piece may be put. If a position is not returned, the piece cannot fit in that position for sure.
@@ -110,11 +113,48 @@ class Quilt:
 	
 		#TODO: implement score
 		
-		valid_horizontal_alignment = self.all_the_possible_alignments ( l1, self.hholes )
-		valid_vertical_alignment = self.all_the_possible_alignments ( l2, self.vholes )
+		valid_horizontal_alignment = self.all_the_possible_alignments ( l_hor, self.hholes )
+		valid_vertical_alignment = self.all_the_possible_alignments ( l_ver, self.vholes )
 		
 		return [ (x,y) for y in valid_vertical_alignment for x in valid_horizontal_alignment ] 
 
+	def try_insert(self, pos, piece_mat):
+		
+		
+		cond = True
+		
+		for i in range(pos[0], pos[0]+len(piece_mat)):
+			for j in range(pos[1], pos[1]+len(piece_mat[0])):
+				
+				if self.matrix[i][j]=='x' and piece_mat[i-pos[0]][j-pos[1]] == 'x':
+					cond =  False
+				
+		return cond
+		
+
 if __name__ == "__main__":
+	import Pezzo
+	
 	q = parse_quilt ( open ("quilt_test").readlines() )
-	print q.candidate_positions ( [1,2,2,1], [3,3] )
+	
+	p = Pezzo.Pezzo(["x.", 
+					 "xx", 
+					 "xx", 
+					 ".x"], 4, 2, 0, 0)
+	
+	print "QUILT:"
+	print q.matrix
+	
+	for perm in p.permutazioni:
+		positions = q.candidate_positions ( perm.l_hor, perm.l_ver)
+		
+		print perm.matrice
+		print 
+		
+		for pos in positions:
+			print "Provo:", pos
+			print q.try_insert(pos, perm.matrice)
+
+		raw_input()
+	
+	
