@@ -2,10 +2,10 @@
 
 def valid_alignment ( needle, haystack, posstart ):
 	
-	print "check if is a valid alignment"
-	print "needle", needle 
-	print "haystack", haystack
-	print "pos start", posstart 
+	#~ print "check if is a valid alignment"
+	#~ print "needle", needle 
+	#~ print "haystack", haystack
+	#~ print "pos start", posstart 
 	
 	still_valid = False
 	
@@ -13,13 +13,13 @@ def valid_alignment ( needle, haystack, posstart ):
 		j=0
 		still_valid = True
 		while j<len(needle) and still_valid:
-			print "j=",j
+			#~ print "j=",j
 			still_valid = False
 			if any ( x>=needle[j] for x in haystack[posstart+j] ):
 				still_valid = True
 			j += 1
 	
-	print still_valid, "\n\n"
+	#~ print still_valid, "\n\n"
 	#~ raw_input ()
 
 	return still_valid
@@ -100,7 +100,14 @@ class Quilt:
 		posmax = needle.index ( m )
 		for i in range ( len(haystack) ):
 			if any ( [ x >= m for x in haystack[i] ] ) and valid_alignment ( needle, haystack, i-posmax ) :
-				result_set.append ( i-posmax )
+				pos = i-posmax
+				score = 0
+				for j in range ( len ( needle ) ):
+					
+					if any ( k == needle[j] for k in haystack[pos+j] ):
+						score += 1
+					
+				result_set.append ( (pos,score) )
 		
 		return result_set
 		
@@ -108,15 +115,19 @@ class Quilt:
 	def candidate_positions ( self, l_hor, l_ver, top=-1 ):
 		'''
 			finds the top candidate positions for a piece, given the maximum amount of contiguous squares in each row (l1) and in each col (l2). 
-			returns a list of all the positions in which that piece may be put. If a position is not returned, the piece cannot fit in that position for sure.
+			returns a list of all the positions in which that piece may be put, each of them with its score. If a position is not returned, the piece cannot fit in that position for sure.
 		'''
 	
-		#TODO: implement score
+		valid_horizontal_alignments = self.all_the_possible_alignments ( l_hor, self.hholes )
+		valid_vertical_alignments = self.all_the_possible_alignments ( l_ver, self.vholes )
 		
-		valid_horizontal_alignment = self.all_the_possible_alignments ( l_hor, self.hholes )
-		valid_vertical_alignment = self.all_the_possible_alignments ( l_ver, self.vholes )
+		not_sorted = [ ( (posx,posy), scorex+scorey ) for ( posy, scorey ) in valid_vertical_alignments for ( posx, scorex ) in valid_horizontal_alignments ]
+		#~ print not_sorted
+		#~ raw_input ()
 		
-		return [ (x,y) for y in valid_vertical_alignment for x in valid_horizontal_alignment ] 
+		ret = list ( sorted ( not_sorted, key = lambda x : x[1], reverse = True ) )
+		
+		return ret
 
 	def try_insert(self, pos, piece_mat):
 		
@@ -142,17 +153,19 @@ if __name__ == "__main__":
 					 "xx", 
 					 ".x"], 4, 2, 0, 0)
 	
-	print "QUILT:"
-	print q.matrix
+	#~ print "QUILT:"
+	#~ print q.matrix
 	
 	for perm in p.permutazioni:
 		positions = q.candidate_positions ( perm.l_hor, perm.l_ver)
+		#~ print po sitions
 		
 		print perm.matrice
 		print 
 		
-		for pos in positions:
+		for pos, score in positions:
 			print "Provo:", pos
+			print "score", score
 			print q.try_insert(pos, perm.matrice)
 
 		raw_input()

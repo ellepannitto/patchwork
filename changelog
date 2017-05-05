@@ -1,3 +1,9 @@
+Patchwork ver 0.2.4
+  
+  * Implemented simple scoring function for candidate positions.
+
+-- Lucio Messina <luciomessina94@gmail.com> Fri, 05 May 2017 19:15
+
 Patchwork ver 0.2.3
   
   * try_insert for class Quilt added.
